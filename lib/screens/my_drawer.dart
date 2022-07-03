@@ -3,11 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/screens/recycle_bin.dart';
 import 'package:test/screens/tasks_screen.dart';
 
-import '../bloc/bloc/tasks_bloc.dart';
+import '../bloc/switch_bloc/bloc/switch_bloc.dart';
+import '../bloc/tasks_bloc/tasks_bloc.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  bool switchValue = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,7 +33,8 @@ class MyDrawer extends StatelessWidget {
             BlocBuilder<TasksBloc, TasksState>(
               builder: (context, state) {
                 return GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(TasksScreen.id),
+                  onTap: () => Navigator.of(context)
+                      .pushReplacementNamed(TasksScreen.id),
                   child: ListTile(
                     leading: Icon(Icons.folder_special),
                     title: Text('My Tasks'),
@@ -38,7 +46,8 @@ class MyDrawer extends StatelessWidget {
             BlocBuilder<TasksBloc, TasksState>(
               builder: (context, state) {
                 return GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(RecycleBin.id),
+                  onTap: () =>
+                      Navigator.of(context).pushReplacementNamed(RecycleBin.id),
                   child: ListTile(
                     leading: const Icon(Icons.delete),
                     title: const Text('Bin'),
@@ -47,6 +56,17 @@ class MyDrawer extends StatelessWidget {
                 );
               },
             ),
+            BlocBuilder<SwitchBloc, SwitchState>(
+              builder: (context, state) {
+                return Switch(
+                    value: state.switchValue,
+                    onChanged: (newValue) {
+                      newValue
+                          ? context.read<SwitchBloc>().add(SwitchOnEvent())
+                          : context.read<SwitchBloc>().add(SwitchOffEvent());
+                    });
+              },
+            )
           ],
         ),
       ),

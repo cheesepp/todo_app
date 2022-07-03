@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/screens/my_drawer.dart';
 import 'package:test/widgets/task_list.dart';
 
-import '../bloc/bloc/tasks_bloc.dart';
+import '../bloc/tasks_bloc/tasks_bloc.dart';
 
 class RecycleBin extends StatelessWidget {
   const RecycleBin({Key? key}) : super(key: key);

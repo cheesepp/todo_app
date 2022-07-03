@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/bloc/tasks_bloc.dart';
+import '../bloc/tasks_bloc/tasks_bloc.dart';
 import '../models/task.dart';
 
 class ListTiles extends StatefulWidget {
@@ -28,9 +28,11 @@ class _ListTilesState extends State<ListTiles> {
           )),
       trailing: Checkbox(
         value: widget.task.isDone,
-        onChanged: (value) {
-          context.read<TasksBloc>()..add(UpdateTask(task: widget.task));
-        },
+        onChanged: widget.task.isDeleted! == false
+            ? (value) {
+                context.read<TasksBloc>()..add(UpdateTask(task: widget.task));
+              }
+            : null,
       ),
       onLongPress: () => widget._removedOrDeleteTask(context, widget.task),
     );

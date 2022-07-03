@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/widgets/list_tile.dart';
 
-import '../bloc/bloc/tasks_bloc.dart';
+import '../bloc/tasks_bloc/tasks_bloc.dart';
 import '../models/task.dart';
 
 class TaskList extends StatelessWidget {

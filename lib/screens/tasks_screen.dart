@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/models/task.dart';
 import 'package:test/screens/my_drawer.dart';
 import 'package:uuid/uuid.dart';
-import '../bloc/bloc/tasks_bloc.dart';
+import '../bloc/tasks_bloc/tasks_bloc.dart';
 import '../widgets/task_list.dart';
 
 class TasksScreen extends StatelessWidget {
