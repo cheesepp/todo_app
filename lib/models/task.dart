@@ -1,16 +1,28 @@
 class Task {
   final String id;
   final String title;
+  final String description;
   bool? isDone;
   bool? isDeleted;
 
-  Task({required this.title, required this.id, this.isDeleted, this.isDone}) {
+  Task(
+      {required this.title,
+      required this.description,
+      required this.id,
+      this.isDeleted,
+      this.isDone}) {
     isDone = isDone ?? false;
     isDeleted = isDeleted ?? false;
   }
 
-  Task copyWith({String? title, String? id, bool? isDone, bool? isDeleted}) {
+  Task copyWith(
+      {String? title,
+      String? description,
+      String? id,
+      bool? isDone,
+      bool? isDeleted}) {
     return Task(
+      description: description ?? this.description,
       id: id ?? this.id,
       title: title ?? this.title,
       isDone: isDone ?? this.isDone,
@@ -20,6 +32,7 @@ class Task {
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
+      description: json['description'] ?? '',
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       isDeleted: json['isDeleted'],
@@ -29,6 +42,7 @@ class Task {
 
   Map<String, dynamic> toJson() {
     return {
+      'description': description,
       'id': id,
       'title': title,
       'isDeleted': isDeleted,

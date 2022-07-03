@@ -27,9 +27,11 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   void _addTask(BuildContext context) {
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (context) => SingleChildScrollView(
               child: Container(
@@ -52,6 +54,18 @@ class _TabsScreenState extends State<TabsScreen> {
                         decoration: const InputDecoration(
                             label: Text('Title'), border: OutlineInputBorder()),
                       ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      TextField(
+                        autofocus: true,
+                        controller: descriptionController,
+                        minLines: 3,
+                        maxLines: 5,
+                        decoration: const InputDecoration(
+                            label: Text('Description'),
+                            border: OutlineInputBorder()),
+                      ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: const Text('cancel'),
@@ -59,7 +73,9 @@ class _TabsScreenState extends State<TabsScreen> {
                       ElevatedButton(
                           onPressed: () {
                             var task = Task(
-                                title: titleController.text, id: Uuid().v1());
+                                description: descriptionController.text,
+                                title: titleController.text,
+                                id: Uuid().v1());
                             context.read<TasksBloc>().add(AddTask(task: task));
                             Navigator.pop(context);
                           },
