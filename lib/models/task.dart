@@ -1,6 +1,6 @@
 class Task {
-  final String title;
   final String id;
+  final String title;
   bool? isDone;
   bool? isDeleted;
 
@@ -9,7 +9,7 @@ class Task {
     isDeleted = isDeleted ?? false;
   }
 
-  Task copyWith({String? id, String? title, bool? isDone, bool? isDeleted}) {
+  Task copyWith({String? title, String? id, bool? isDone, bool? isDeleted}) {
     return Task(
       id: id ?? this.id,
       title: title ?? this.title,

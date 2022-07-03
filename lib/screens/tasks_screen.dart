@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/models/task.dart';
-
+import 'package:test/screens/my_drawer.dart';
+import 'package:uuid/uuid.dart';
 import '../bloc/bloc/tasks_bloc.dart';
 import '../widgets/task_list.dart';
 
 class TasksScreen extends StatelessWidget {
   TasksScreen({Key? key}) : super(key: key);
-
+  static const id = 'tasks_screen';
   TextEditingController titleController = TextEditingController();
   void _addTask(BuildContext context) {
     showModalBottomSheet(
@@ -39,7 +40,8 @@ class TasksScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                           onPressed: () {
-                            var task = Task(title: titleController.text);
+                            var task = Task(
+                                title: titleController.text, id: Uuid().v1());
                             context.read<TasksBloc>().add(AddTask(task: task));
                             Navigator.pop(context);
                           },
@@ -51,16 +53,17 @@ class TasksScreen extends StatelessWidget {
             ));
   }
 
-  List<Task> taskList = [
-    Task(title: 'Task 1'),
-    Task(title: 'Task 2'),
-    Task(title: 'Task 3'),
-  ];
+  // List<Task> taskList = [
+  //   Task(title: 'Task 1'),
+  //   Task(title: 'Task 2'),
+  //   Task(title: 'Task 3'),
+  // ];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
       List<Task> taskList = state.allTask;
       return Scaffold(
+        drawer: MyDrawer(),
         appBar: AppBar(
           title: const Text('Tasks App'),
           actions: [
@@ -73,10 +76,10 @@ class TasksScreen extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Center(
+            Center(
               child: Chip(
                 label: Text(
-                  'Tasks:',
+                  '${state.allTask.length} Tasks',
                 ),
               ),
             ),
