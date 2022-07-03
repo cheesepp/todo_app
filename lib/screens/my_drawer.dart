@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/screens/recycle_bin.dart';
-import 'package:test/screens/tasks_screen.dart';
+import 'package:test/screens/tabs_screen.dart';
+import 'package:test/screens/pending_screen.dart';
 
 import '../bloc/switch_bloc/bloc/switch_bloc.dart';
 import '../bloc/tasks_bloc/tasks_bloc.dart';
@@ -33,12 +34,13 @@ class _MyDrawerState extends State<MyDrawer> {
             BlocBuilder<TasksBloc, TasksState>(
               builder: (context, state) {
                 return GestureDetector(
-                  onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(TasksScreen.id),
+                  onTap: () =>
+                      Navigator.of(context).pushReplacementNamed(TabsScreen.id),
                   child: ListTile(
                     leading: Icon(Icons.folder_special),
                     title: Text('My Tasks'),
-                    trailing: Text('0'),
+                    trailing: Text(
+                        '${state.allTask.length} | ${state.completedTask.length}'),
                   ),
                 );
               },

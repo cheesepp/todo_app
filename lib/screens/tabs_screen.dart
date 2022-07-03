@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/models/task.dart';
+import 'package:test/screens/completed_tasks_screen.dart';
+import 'package:test/screens/favorite_tasks_screen.dart';
 import 'package:test/screens/my_drawer.dart';
+import 'package:test/screens/pending_screen.dart';
 import 'package:uuid/uuid.dart';
-import '../bloc/tasks_bloc/tasks_bloc.dart';
-import '../widgets/task_list.dart';
 
-class TasksScreen extends StatelessWidget {
-  TasksScreen({Key? key}) : super(key: key);
-  static const id = 'tasks_screen';
+import '../bloc/tasks_bloc/tasks_bloc.dart';
+import '../models/task.dart';
+
+class TabsScreen extends StatefulWidget {
+  TabsScreen({Key? key}) : super(key: key);
+  static const id = 'tabs_screen';
+
+  final List<Map<String, dynamic>> _pageDetails = [
+    {'pageName': PendingTasksScreen(), 'title': 'Pending Tasks'},
+    {'pageName': CompletedTasksScreen(), 'title': 'Completed Tasks'},
+    {'pageName': FavoriteTasksScreen(), 'title': 'Favorite Tasks'},
+  ];
+
+  var _selectedPageIndex = 0;
+
+  @override
+  State<TabsScreen> createState() => _TabsScreenState();
+}
+
+class _TabsScreenState extends State<TabsScreen> {
   TextEditingController titleController = TextEditingController();
+
   void _addTask(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -53,45 +71,44 @@ class TasksScreen extends StatelessWidget {
             ));
   }
 
-  // List<Task> taskList = [
-  //   Task(title: 'Task 1'),
-  //   Task(title: 'Task 2'),
-  //   Task(title: 'Task 3'),
-  // ];
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
-      List<Task> taskList = state.allTask;
-      return Scaffold(
-        drawer: MyDrawer(),
-        appBar: AppBar(
-          title: const Text('Tasks App'),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget._pageDetails[widget._selectedPageIndex]['title']),
+        actions: [
+          IconButton(
+            onPressed: () => _addTask(context),
+            icon: const Icon(Icons.add),
+          )
+        ],
+      ),
+      drawer: MyDrawer(),
+      body: widget._pageDetails[widget._selectedPageIndex]['pageName'],
+      floatingActionButton: widget._selectedPageIndex == 0
+          ? FloatingActionButton(
+              onPressed: () => _addTask(context),
+              tooltip: 'Add Task',
+              child: const Icon(Icons.add),
             )
-          ],
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Chip(
-                label: Text(
-                  '${state.allTask.length} Tasks',
-                ),
-              ),
-            ),
-            TaskList(taskList: taskList)
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _addTask(context),
-          tooltip: 'Add Task',
-          child: const Icon(Icons.add),
-        ),
-      );
-    });
+          : null,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: widget._selectedPageIndex,
+        onTap: (index) {
+          setState(() {
+            widget._selectedPageIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.incomplete_circle_sharp),
+              label: 'Pending Tasks'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.done), label: 'Completed Tasks'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favorite Tasks'),
+        ],
+      ),
+    );
   }
 }

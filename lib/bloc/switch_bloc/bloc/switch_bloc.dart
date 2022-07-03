@@ -11,14 +11,14 @@ class SwitchBloc extends HydratedBloc<SwitchEvent, SwitchState> {
       emit(
         const SwitchState(switchValue: true),
       );
-      on<SwitchOffEvent>(
-        (event, emit) {
-          emit(
-            const SwitchState(switchValue: false),
-          );
-        },
-      );
     });
+    on<SwitchOffEvent>(
+      (event, emit) {
+        emit(
+          const SwitchState(switchValue: false),
+        );
+      },
+    );
   }
 
   @override

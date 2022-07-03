@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:test/bloc/switch_bloc/bloc/switch_bloc.dart';
+import 'package:test/screens/tabs_screen.dart';
 import 'package:test/services/app_theme.dart';
 import '../bloc/tasks_bloc/tasks_bloc.dart';
-import 'package:test/screens/tasks_screen.dart';
+import 'package:test/screens/pending_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test/services/app_router.dart';
 import 'models/task.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
             theme: state.switchValue
                 ? AppThemes.appThemeData[AppTheme.darkTheme]
                 : AppThemes.appThemeData[AppTheme.lightTheme],
-            home: TasksScreen(),
+            home: TabsScreen(),
             onGenerateRoute: appRouter.onGenerateRoute,
           );
         },
