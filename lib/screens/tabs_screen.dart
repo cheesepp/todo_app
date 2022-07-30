@@ -75,6 +75,7 @@ class _TabsScreenState extends State<TabsScreen> {
                             var task = Task(
                                 description: descriptionController.text,
                                 title: titleController.text,
+                                date: DateTime.now().toString(),
                                 id: Uuid().v1());
                             context.read<TasksBloc>().add(AddTask(task: task));
                             Navigator.pop(context);
